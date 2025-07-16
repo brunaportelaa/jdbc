@@ -5,12 +5,12 @@ public class App {
     public static void main(String[] args) {
 
         // Instanciando o DataSource
+        // Transformar em Singleton
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setServerName("localhost");
         dataSource.setPort(3306);
         dataSource.setDatabaseName("escola");
 
-        //Como criar conexão como singleton?
 
         // Iniciando a conexão
         try (Connection connection = dataSource.getConnection(
@@ -36,6 +36,7 @@ public class App {
                     case 1:
                         Aluno aluno = View.lerAluno();
                         dbCrud.inserirAluno(aluno);
+                        dbCrud.listarTodos();
                         break;
                     case 2:
                         View.exibirResultado(dbCrud.listarTodos());
