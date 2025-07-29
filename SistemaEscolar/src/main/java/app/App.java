@@ -1,4 +1,13 @@
+package app;
+
 import com.mysql.cj.jdbc.MysqlDataSource;
+import dao.DatabaseCRUD;
+import datasource.DatasourceFactoryProvider;
+import model.Aluno;
+import ui.Leitor;
+import ui.View;
+
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class App {
@@ -6,11 +15,7 @@ public class App {
 
         // Instanciando o DataSource
         // Transformar em Singleton
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setServerName("localhost");
-        dataSource.setPort(3306);
-        dataSource.setDatabaseName("escola");
-
+        DataSource dataSource = DatasourceFactoryProvider.createDatasource("mysql");
 
         // Iniciando a conexão
         try (Connection connection = dataSource.getConnection(
