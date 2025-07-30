@@ -1,18 +1,21 @@
+package dao;
+
+import dto.AlunoDTO;
+import util.QuerySql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class DatabaseCRUD {
+public class AlunoDAOImpl {
 
     public Connection connection;
-
-    public DatabaseCRUD(Connection connection) {
+    public AlunoDAOImpl(Connection connection) {
         this.connection = connection;
     }
 
-    public void inserirAluno(Aluno aluno) {
+    public void inserirAluno(AlunoDTO aluno) {
         try (PreparedStatement ps = connection.prepareStatement(QuerySql.INSERIR_ALUNO.getQuery())){
             ps.setString(1, aluno.getNome());
             ps.setString(2, aluno.getCpf());
@@ -26,12 +29,12 @@ public class DatabaseCRUD {
         }
     }
 
-    public ArrayList<Aluno> listarTodos() {
+    public ArrayList<AlunoDTO> listarTodos() {
         try (PreparedStatement ps = connection.prepareStatement(QuerySql.LISTAR_TODOS.getQuery())){
             ResultSet result = ps.executeQuery();
-            ArrayList<Aluno> alunos = new ArrayList<>();
+            ArrayList<AlunoDTO> alunos = new ArrayList<>();
             while (result.next()) {
-                Aluno aluno = new Aluno(
+                AlunoDTO aluno = new AlunoDTO(
                         result.getInt("id"),
                         result.getString("nome"),
                         result.getString("cpf"),
@@ -45,15 +48,15 @@ public class DatabaseCRUD {
         }
     }
 
-    public Aluno buscarPorId(int idPesquisado) {
+    public AlunoDTO buscarPorId(int idPesquisado) {
         try (PreparedStatement ps = connection.prepareStatement(QuerySql.BUSCAR_POR_ID.getQuery())){
             ps.setInt(1, idPesquisado);
             ResultSet result = ps.executeQuery();
-            ArrayList<Aluno> alunos = new ArrayList<>();
+            ArrayList<AlunoDTO> alunos = new ArrayList<>();
             if (!result.next()) {
                 System.out.println("Não existe um aluno com esse ID.");
             } else {
-                Aluno aluno = new Aluno(
+                AlunoDTO aluno = new AlunoDTO(
                             result.getInt("id"),
                             result.getString("nome"),
                             result.getString("cpf"),
@@ -67,7 +70,7 @@ public class DatabaseCRUD {
         return null;
     }
 
-    public int atualizaPorId(int idPesquisado, Aluno aluno) {
+    public int atualizaPorId(int idPesquisado, AlunoDTO aluno) {
         try (PreparedStatement ps = connection.prepareStatement(QuerySql.ATUALIZAR_POR_ID.getQuery())) {
             ps.setString(1, aluno.getNome());
             ps.setString(2, aluno.getCpf());
@@ -88,13 +91,13 @@ public class DatabaseCRUD {
         }
     }
 
-    public ArrayList<Aluno> buscaPorNome(String termoPesquisa) {
+    public ArrayList<AlunoDTO> buscaPorNome(String termoPesquisa) {
         try (PreparedStatement ps = connection.prepareStatement(QuerySql.BUSCAR_POR_NOME.getQuery())) {
             ps.setString(1, "%" + termoPesquisa + "%");
             ResultSet result = ps.executeQuery();
-            ArrayList<Aluno> alunos = new ArrayList<>();
+            ArrayList<AlunoDTO> alunos = new ArrayList<>();
             while (result.next()) {
-                Aluno aluno = new Aluno(
+                AlunoDTO aluno = new AlunoDTO(
                         result.getInt("id"),
                         result.getString("nome"),
                         result.getString("cpf"),

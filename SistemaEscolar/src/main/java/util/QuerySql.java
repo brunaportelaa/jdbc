@@ -1,3 +1,5 @@
+package util;
+
 public enum QuerySql {
 
     INSERIR_ALUNO("INSERT INTO aluno (nome,cpf,idade) values (?, ?, ?)"),

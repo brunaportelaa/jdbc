@@ -1,16 +1,18 @@
-public class Aluno {
+package dto;
+
+public class AlunoDTO {
     private int id;
     private String nome;
     private String cpf;
     private int idade;
 
-    public Aluno( String nome, String cpf, int idade) {
+    public AlunoDTO(String nome, String cpf, int idade) {
         setNome(nome);
         setCpf(cpf);
         setIdade(idade);
     }
 
-    public Aluno( int id, String nome, String cpf, int idade) {
+    public AlunoDTO(int id, String nome, String cpf, int idade) {
         setId(id);
         setNome(nome);
         setCpf(cpf);

@@ -1,24 +1,20 @@
-import com.mysql.cj.jdbc.MysqlDataSource;
+import dao.AlunoDAOImpl;
+import datasource.MySQLDataSourceManager;
+import dto.AlunoDTO;
+import ui.Leitor;
+import ui.View;
+
 import java.sql.*;
 
 public class App {
     public static void main(String[] args) {
 
-        // Instanciando o DataSource
-        // Transformar em Singleton
-        MysqlDataSource dataSource = new MysqlDataSource();
-        dataSource.setServerName("localhost");
-        dataSource.setPort(3306);
-        dataSource.setDatabaseName("escola");
+        //Iniciando o Data Source
+        MySQLDataSourceManager dataSource = new MySQLDataSourceManager("localhost", 3306, "escola");
 
+        try (Connection connection = dataSource.getConnection()) {
 
-        // Iniciando a conexão
-        try (Connection connection = dataSource.getConnection(
-                System.getenv("MYSQL_USER"),
-                System.getenv("MYSQL_PASS"))
-        ) {
-
-            DatabaseCRUD dbCrud = new DatabaseCRUD(connection);
+            AlunoDAOImpl alunoDAO = new AlunoDAOImpl(connection);
             boolean continuar = true;
             int idPesquisado;
 
@@ -34,37 +30,37 @@ public class App {
 
                 switch (opcao) {
                     case 1:
-                        Aluno aluno = View.lerAluno();
-                        dbCrud.inserirAluno(aluno);
-                        dbCrud.listarTodos();
+                        AlunoDTO aluno = View.lerAluno();
+                        alunoDAO.inserirAluno(aluno);
+                        alunoDAO.listarTodos();
                         break;
                     case 2:
-                        View.exibirResultado(dbCrud.listarTodos());
+                        View.exibirResultado(alunoDAO.listarTodos());
                         break;
                     case 3:
                         idPesquisado = Leitor.lerInt("Informe o ID que deseja pesquisar:");
-                        if (dbCrud.buscarPorId(idPesquisado) == null) {
+                        if (alunoDAO.buscarPorId(idPesquisado) == null) {
                             System.out.println("Não existe um aluno com esse ID.");
                             break;
                         } else {
-                            Aluno novoAluno = View.lerAluno();
-                            dbCrud.atualizaPorId(idPesquisado, novoAluno);
-                            dbCrud.listarTodos();
+                            AlunoDTO novoAluno = View.lerAluno();
+                            alunoDAO.atualizaPorId(idPesquisado, novoAluno);
+                            alunoDAO.listarTodos();
                         }
                         break;
                     case 4:
                         idPesquisado = Leitor.lerInt("Informe o ID que deseja pesquisar:");
-                        if (dbCrud.buscarPorId(idPesquisado) == null) {
+                        if (alunoDAO.buscarPorId(idPesquisado) == null) {
                             System.out.println("Não existe um aluno com esse ID.");
                             break;
                         } else {
-                            dbCrud.excluirPorId(idPesquisado);
-                            dbCrud.listarTodos();
+                            alunoDAO.excluirPorId(idPesquisado);
+                            alunoDAO.listarTodos();
                         }
                         break;
                     case 5:
                         String termoPesquisa = Leitor.lerString("Informe o termo a ser pesquisado: ");
-                        View.exibirResultado(dbCrud.buscaPorNome(termoPesquisa));
+                        View.exibirResultado(alunoDAO.buscaPorNome(termoPesquisa));
                         break;
                     default:
                         System.out.println("Encerrando a conexão.");
