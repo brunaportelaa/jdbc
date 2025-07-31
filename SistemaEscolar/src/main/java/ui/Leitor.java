@@ -5,7 +5,18 @@ import java.util.Scanner;
 public class Leitor {
 
     public static int lerInt() {
-        return new Scanner(System.in).nextInt();
+        Scanner scanner = new Scanner(System.in);
+        int valor;
+
+        while (true) {
+            try {
+                valor = Integer.parseInt(scanner.nextLine());
+                return valor;
+            } catch (NumberFormatException e){
+                System.out.println("Entrada inválida. Digite um número inteiro.");
+            }
+        }
+
     }
 
     public static int lerInt(String msg) {

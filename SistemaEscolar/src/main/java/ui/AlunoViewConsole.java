@@ -2,12 +2,9 @@ package ui;
 
 import dto.AlunoDTO;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class View {
+public class AlunoViewConsole {
     public static AlunoDTO lerAluno() {
         String nome = Leitor.lerString("Nome: ");
         String cpf = Leitor.lerString("CPF: ");
